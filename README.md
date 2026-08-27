@@ -4,13 +4,13 @@ Design and configure a complete small business network for a coffee shop using C
 
 In this project:
 
-Network planning and topology design
-VLAN configuration
-Router-on-a-Stick Inter-VLAN Routing
-Trunk and Access Port Configuration
-DHCP Configuration
-SSH Remote Management
-PortFast Configuration
-Guest Wi-Fi Configuration
-Standard Access Control Lists (ACLs)
-End-to-End Network Verification
+Network planning and topology design<br />
+VLAN configuration<br />
+Router-on-a-Stick Inter-VLAN Routing<br />
+Trunk and Access Port Configuration<br />
+DHCP Configuration<br />
+SSH Remote Management<br />
+PortFast Configuration<br />
+Guest Wi-Fi Configuration<br />
+Standard Access Control Lists (ACLs)<br />
+End-to-End Network Verification<br />
