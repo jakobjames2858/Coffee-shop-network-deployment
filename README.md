@@ -66,3 +66,22 @@ The local coffee shop switch was configured using enterprise-grade deployment st
 *   **Secure Remote Shell (SSHv2) Implementation**
     *   **Technical Function:** Configured secure virtual lines (`line vty 0 15`) to restrict access exclusively to encrypted SSHv2 traffic while completely disabling cleartext Telnet.
     *   **Purpose:** Secures remote management across the network by establishing an internal domain name (`Coffeeshop.local`), generating RSA cryptographic key pairs, and creating a dedicated local administrator profile (`username admin privilege 15`).
+ 
+
+### 🔍 Verification & Output Validation
+
+To verify that the Layer 2 configuration was successfully applied and that all local interfaces are operating as expected, the following Cisco IOS verification commands were executed:
+
+<details>
+<summary><b>📷 Click to View Verification Screenshots</b></summary>
+
+#### 1. VLAN Verification (`show vlan brief`)
+This output confirms that all functional VLANs (10, 20, 30) were properly created in the database and that the respective access interfaces were successfully mapped to their isolated domains.
+
+![Cisco IOS Show VLAN Brief Output](./Image/show-vlan-brief.png)
+
+#### 2. Interface Status Verification (`show ip interface brief`)
+This output verifies the Layer 3 Switched Virtual Interface (SVI) for the Management VLAN 99 is assigned the correct IP address (`192.168.99.2`) and that all unused physical ports are successfully in an `administratively down` state.
+
+![Cisco IOS Show IP Interface Brief Output](./Image/show-ip-interface-brief.png)
+
