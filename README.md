@@ -73,7 +73,7 @@ The local coffee shop switch was configured using enterprise-grade deployment st
 To verify that the Layer 2 configuration was successfully applied and that all local interfaces are operating as expected, the following Cisco IOS verification commands were executed:
 
 <details>
-<summary><b>📷 Click to View Verification Screenshots</b></summary>
+<summary><b>Click to View Verification Screenshots</b></summary>
 
 #### 1. VLAN Verification (`show vlan brief`)
 This output confirms that all functional VLANs (10, 20, 30) were properly created in the database and that the respective access interfaces were successfully mapped to their isolated domains.
