@@ -92,21 +92,6 @@ This output verifies the Layer 3 Switched Virtual Interface (SVI) for the Manage
 To verify that the infrastructure operates exactly as intended, the coffee shop network was subjected to both standard configuration validation and simulated perimeter security testing.
 
 <details>
-<summary><b>📷 Click to View Standard Network Verification Screenshots</b></summary>
-
-#### 1. VLAN Routing Segmentation (`show vlan brief`)
-This output validates that our distinct broadcast domains (Management, POS, and Guest) are built out correctly and mapped to their respective physical interfaces.
-
-![Cisco IOS Show VLAN Brief Output](./Image/show-vlan-brief.png)
-
-#### 2. Interface Layer-3 Mapping (`show ip interface brief`)
-This output verifies that the dedicated Management SVI is reachable on the correct IP subnet and confirms that all unused interfaces are safely locked down in an `administratively down` state.
-
-![Cisco IOS Show IP Interface Brief Output](./Image/show-ip-interface-brief.png)
-
-</details>
-
-<details>
 <summary><b>🛡️ Click to View Live BPDU Guard Security Testing</b></summary>
 
 #### 🚀 Live Security Testing: BPDU Guard Enforcement
