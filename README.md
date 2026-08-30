@@ -1,25 +1,26 @@
 # Coffee Shop Enterprise Network Design
 
-## Project Overview & Business Case
+## Project Overview
 
-This project utilizes Cisco Packet Tracer to demonstrate a real-world enterprise network solution tailored for a business environment. The objective is to design, implement, and secure a production-ready network architecture for a local coffee shop deployment using Cisco IOS. 
+This project utilizes Cisco Packet Tracer to demonstrate a real-world enterprise network solution for a business environment. The objective is to design, implement, and secure a production-ready network architecture for a local coffee shop deployment using Cisco IOS. 
 
 ### The Network Solution
-To satisfy modern business requirements, this network infrastructure incorporates multiple Virtual Local Area Networks (VLANs) and a dedicated Guest Wi-Fi segment, including a centralized DHCP server to hand out IP addresses automatically to all VLANs. This design guarantees clear logical segregation across different operational environments:
+To satisfy modern business requirements, this network infrastructure incorporates multiple Virtual Local Area Networks (VLANs) and a dedicated Guest Wi-Fi, including a centralized DHCP server to hand out IP addresses automatically to all VLANs. This design guarantees clear logical separation across different operational environments:
 
 1.  **Management Office Traffic (VLAN 10):** Restricts access to corporate systems, office computers, and local administration resources.
-2.  **Point of Sale (POS) Systems (VLAN 20):** Dedicates a hardened network segment for card processing registers to ensure regulatory data compliance.
-3.  **Guest Wi-Fi Subnet (VLAN 30):** Provisions public internet access for untrusted customer devices through wireless Access Points, completely cut off from private systems.
+2.  **Point of Sale (POS) Systems (VLAN 20):** Dedicates a network segment for card processing registers.
+3.  **Guest Wi-Fi Subnet (VLAN 30):** Public internet access for customer devices through wireless Access Points, isolated from internal resources.
 
-Leaving a business network unsegmented exposes critical payment processing systems and office infrastructure to potential malicious actors residing on public access links. By combining robust Layer 2 port security with Layer 3 inter-VLAN routing and automated IP addressing, this lab maps out a comprehensive perimeter defense framework capable of sustaining safe retail business operations.
+Leaving a business network unsegmented exposes critical payment processing systems and office infrastructure to potential malicious attacks on public access links. By combining Layer 2 port security(BPDU Guard and administrative port shutdowns) with Layer 3 inter-VLAN routing and automated IP addressing.
 
 ### Network Topology Architecture
 
-Below is the production-ready network layout designed and verified inside Cisco Packet Tracer, mapping out the multi-VLAN segmentation and edge gateway boundaries:
+Below is the production ready network layout designed:
 
 ![Cisco Packet Tracer Network Topology Layout](./Image/network-topology.png)
-**[Download the Cisco Packet Tracer Lab File (.pkt)](./coffee-shop-topology.pkt)**
----
+**[Download the Cisco Packet Tracer Lab File (.pkt)](./configs/Coffee-shop-network-deployment.pkt)**
+
+
 
 
 ## Cisco IOS Configuration Breakdown (`Coffeeshop-SW1`)
