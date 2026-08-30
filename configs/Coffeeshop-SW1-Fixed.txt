@@ -1,0 +1,219 @@
+Building configuration...
+
+Current configuration : 3532 bytes
+!
+version 12.2(37)SE1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname Coffeeshop-SW1
+!
+!
+no profinet
+enable secret 5 $1$mERr$RldxcCZEZsTFTETUyRaA50
+!
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 secret 5 $1$mERr$RldxcCZEZsTFTETUyRaA50
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip ssh version 2
+no ip domain-lookup
+ip domain-name Coffeeshop.local
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/1
+ description Management_Office_Device
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ description Management_Office_Device
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ description Management_Office_Device
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+ shutdown
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+ description Management_Office_Device
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+ shutdown
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/5
+ description Management_Office_Device
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+ shutdown
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/6
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/7
+ description POS_Devices
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/8
+ description POS_Devices
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast
+ shutdown
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/9
+ description POS_Devices
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast
+ shutdown
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/10
+ description POS_Devices
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast
+ shutdown
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/11
+ description Guess_WIFI_AP
+ switchport access vlan 30
+ switchport trunk native vlan 30
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/12
+ shutdown
+!
+interface FastEthernet0/13
+ shutdown
+!
+interface FastEthernet0/14
+ shutdown
+!
+interface FastEthernet0/15
+ shutdown
+!
+interface FastEthernet0/16
+ shutdown
+!
+interface FastEthernet0/17
+ shutdown
+!
+interface FastEthernet0/18
+ shutdown
+!
+interface FastEthernet0/19
+ shutdown
+!
+interface FastEthernet0/20
+ shutdown
+!
+interface FastEthernet0/21
+ shutdown
+!
+interface FastEthernet0/22
+ shutdown
+!
+interface FastEthernet0/23
+ shutdown
+!
+interface FastEthernet0/24
+ shutdown
+!
+interface GigabitEthernet0/1
+ description Uplink_coffee_shop
+ switchport trunk allowed vlan 10,20,30,99
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface GigabitEthernet0/2
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan99
+ description Switch_Mangement
+ mac-address 0060.3e79.a001
+ ip address 192.168.99.2 255.255.255.0
+!
+ip default-gateway 192.168.99.1
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+banner motd ^C
+Unauthorized access is prohibited.
+
+
+^C
+!
+!
+!
+!
+!
+line con 0
+ password 7 0802455D0A16544541
+ logging synchronous
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+!
+!
+!
+end
