@@ -25,7 +25,7 @@ Below is the production ready network layout designed:
 
 ## Cisco IOS Configuration Breakdown (`Coffeeshop-SW1`)
 
-The local coffee shop switch was configured using enterprise-grade deployment standards. Below is a detailed breakdown of the commands implemented, their technical functions, and the custom security enhancements added to improve the baseline topology.
+The local coffee shop switch was configured. Below is a detailed breakdown of the commands implemented, their technical functions, and the custom security enhancements added to improve the baseline topology.
 
 ---
 
@@ -53,7 +53,7 @@ The local coffee shop switch was configured using enterprise-grade deployment st
 
 #### VLAN 10: Management Office
 *   **Purpose:** Isolates back-office administrative computers and corporate office devices.
-*   **Interfaces:** `FastEthernet 0/1` through `0/5`.
+*   **Interfaces:** `FastEthernet 0/1` through `0/5` this was done for future expansion.
 *   **Configuration:** Ports set to static access mode (`switchport mode access`) and explicitly bound to VLAN 10 (`switchport access vlan 10`).
 *   **STP Optimization:** `spanning-tree portfast` enabled to bypass standard Listening/Learning delays, granting immediate network connectivity to office hardware.
 *   **Hardening (Not done in the video):** 
@@ -62,7 +62,7 @@ The local coffee shop switch was configured using enterprise-grade deployment st
 
 #### VLAN 20: Point of Sale (POS) Systems
 *   **Purpose:** Dedicates an isolated network segment strictly for cash registers and credit card transaction devices. 
-*   **Interfaces:** `FastEthernet 0/6` through `0/10`.
+*   **Interfaces:** `FastEthernet 0/6` through `0/10` this was done for future expansion.
 *   **Configuration:** Interfaces locked down to static access mode and assigned directly to VLAN 20.
 *   **STP Optimization:** PortFast enabled to ensure financial endpoints connect and acquire DHCP addressing instantly upon boot.
 *   **Hardening (Not done in the video):** 
@@ -75,19 +75,20 @@ The local coffee shop switch was configured using enterprise-grade deployment st
 *   **Configuration:** Configured as a static access port on VLAN 30 with PortFast active, allowing the wireless access point to join the forwarding state instantly.
 
 ####  VLAN 99: Network Management SVI
-*   **Purpose:** Creates a dedicated, non-default virtual management segment to securely administer local infrastructure hardware.
+*   **Purpose:** Creates a dedicated,virtual management segment to securely administer local infrastructure hardware.
 *   **Configuration:** Configured via `interface Vlan99` with a static IP address (`192.168.99.2 /24`) and default gateway to enable remote administrative visibility and control plane traffic across subnets.
 
 #### Unused Interfaces Hardening
-*   **Hardening (Not done in the video):** All remaining unused interfaces (`Fa0/12` through `Fa0/24` and `Gi0/2`) were manually targeted with a `shutdown` command to completely eliminate vulnerabilities.
+*   **Hardening (Not done in the video):** All remaining unused interfaces (`Fa0/12` through `Fa0/24` and `Gi0/2`) were manually targeted with a `shutdown` command.
 
 ---
 
-### 3. Core Uplink Trunk & Remote Access (SSH)
+### 3. Core Uplink Trunk
 
 *   **High-Speed Trunk Port (`GigabitEthernet 0/1`)**
     *   **Technical Function:** Configured as a formal 802.1Q trunk link (`switchport mode trunk`).
     *   **Purpose:** Acts as a high-speed multi-lane highway, allowing isolated traffic streams from VLANs 10, 20, 30, and 99 to travel securely to the core router across a single physical link using frame tags (`dot1q`).
+### 4. Remote Management & Control Plane Hardening (SSHv2)
 *   **Secure Remote Shell (SSHv2) Implementation**
     *   **Technical Function:** Configured secure virtual lines (`line vty 0 15`) to restrict access exclusively to encrypted SSHv2 traffic while completely disabling cleartext Telnet.
     *   **Purpose:** Secures remote management across the network by establishing an internal domain name (`Coffeeshop.local`), generating RSA cryptographic key pairs, and creating a dedicated local administrator profile (`username admin privilege 15`).
@@ -101,7 +102,7 @@ To verify that the Layer 2 configuration was successfully applied and that all l
 <summary><b>Click to View Verification Screenshots</b></summary>
 
 #### 1. VLAN Verification (`show vlan brief`)
-This output confirms that all functional VLANs (10, 20, 30) were properly created in the database and that the respective access interfaces were successfully mapped to their isolated domains.
+This output confirms that all functional VLANs (10, 20, 30) were properly created and that the respective access interfaces were successfully mapped to their domains.
 
 ![Cisco IOS Show VLAN Brief Output](./Image/show-vlan-brief.png)
 
@@ -131,7 +132,7 @@ To validate our perimeter security hardening, a rogue switch was maliciously att
     
     ![BPDU Guard Console Output](./Image/bpduguard-error-output.png)
 
-  This simulation why BPDU Guard is a critical operational safeguard. If a future network administrator troubleshooting an endpoint re-enables a physical switchport without realizing `spanning-tree portfast` is globally active on it, any accidental loop or rogue hardware extension would immediately crash the local network. 
+  This simulation why BPDU Guard is a critical operational safeguard. If a future network administrator troubleshooting an endpoint re-enables a physical switchport without realizing `spanning-tree portfast` is active on it, any accidental loop or rogue hardware extension would cause a loop. 
 
 
 </details>
