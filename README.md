@@ -201,7 +201,7 @@ To verify that the Core Router (`Coffeeshop_R1`) is correctly routing internal t
 
 ### 3. Security Boundary Restriction (Office PC to Guest Laptop)
 *   **The Test:** A ping was attempted from the Manager PC (`VLAN 10`) to one of the public customer wireless endpoints on the Guest Wi-Fi pool (`VLAN 30`).
-*   **Expected Result:** Request Timed Out or Destination Host Unreachable. This explicitly proves that our extended Access Control List boundaries are running without leaks, preventing any cross-subnet data exposure or unauthorized network mapping between public guests and private infrastructure.
+*   **Expected Result:** Request Timed Out. This explicitly proves that our extended Access Control List boundaries are running without leaks, preventing any cross-subnet data exposure or unauthorized network mapping between public guests and private infrastructure.
 
 ![Ping Blocked: Office PC to Guest Laptop](./Image/pingofficetoguest.png)
 
@@ -215,8 +215,8 @@ To verify that the Core Router (`Coffeeshop_R1`) is successfully automating IP a
 <summary><b>Click to View Dynamic DHCP Addressing Screenshots</b></summary>
 
 ### Core Router DHCP Resource Monitoring (`show ip dhcp pool`)
-*   **The Test:** Executed the standard resource monitoring command on the Core Router CLI to audit the active utilization, available lease counts, and dynamic address allocation states across all three configured business subnets.
-*   **Expected Result:** Successful execution displaying a real-time tracking metric table. The terminal output explicitly validates that our dynamic scopes (`Office_Management`, `POS`, and `wifi`) are active, tracking accurate subnet ranges, and successfully monitoring live leased address bindings across our local area network.
+*   **The Test:** Executed the (`Show Ip DHCP pool`). command on the Core Router CLI to audit the active utilization, available lease counts, and dynamic address allocation states across all three configured subnets.
+*   **Expected Result:** The terminal output explicitly validates that our dynamic scopes (`Office_Management`, `POS`, and `wifi`) are active, tracking accurate subnet ranges, and successfully monitoring live leased address bindings across our local area network.
 
 ![DHCP Operational Resource Monitoring](./Image/DHCPPool.png)
 
@@ -227,48 +227,43 @@ To verify that the Core Router (`Coffeeshop_R1`) is successfully automating IP a
 ![DHCP Verification: Wired Office Computer](./Image/DHCPManagerPC.png)
 
 ### 2. Transaction Tier Automation Validation (POS Terminal DHCP Lease)
-*   **The Test:** A network property initialization check was run on a register terminal endpoint sitting inside the cash handling block (`VLAN 20`) to verify automated gateway availability.
+*   **The Test:**  The local network interface card configuration on the Manager PC (`VLAN 20`) was toggled from a manual allocation state to dynamic acquisition mode to trigger a standardized DHCP handshake process.
 *   **Expected Result:** Successful IP allocation. The terminal successfully pulled an address starting above the static reservation threshold (`192.168.20.21`), confirming that financial infrastructure devices can dynamically register and reach the network instantly upon booting up.
 
 ![DHCP Verification: POS Terminal Register](./Image/DHCPPOS.png)
 
 ### 3. Public Segment Wireless Automation Validation (Guest Laptop DHCP Lease)
-*   **The Test:** A wireless client device completed a physical radio link-state connection to the public Access Point SSID and submitted an untagged broadcast query up the switchport pipeline toward the router.
-*   **Expected Result:** Successful IP allocation. The wireless endpoint successfully bypassed the surrounding security perimeter filters and fetched its correct dynamic parameter lease (`192.168.30.21`), proving that the router handles untagged guest queries flawlessly.
+*   **The Test:** A wireless client device completed a connection to the public Access Point SSID.
+*   **Expected Result:** Successful IP allocation. The wireless endpoint successfully bypassed the surrounding security perimeter filters and fetched its correct dynamic parameter lease (`192.168.30.21`), proving that the router handles guest queries flawlessly.
 
 ![DHCP Verification: Wireless Guest Laptop](./Image/DHCPLaptop1.png)
 
 </details>
 
-## Troubleshooting Log: Post-Deployment Issues & Resolutions
+## Troubleshooting Log: Post Deployment Issues & Resolutions
 
 ### 1. Total Network Addressing Blackout (Missing Trunk Link Operational Mode)
 
 #### The Problem & Diagnostic Discovery Process
-During initial post-configuration verification, a client laptop attempting to establish a wireless connection to the public Access Point failed to acquire a dynamic IP address lease from the DHCP pool. To isolate the issue, a systemic network-wide audit was conducted, confirming that none of the host nodes across any of the logical subnets (Management Office or Point of Sale tiers) were receiving dynamic IP addresses. Endpoints were defaulting to localized APIPA addresses (`169.254.x.x`).
+During initial post configuration verification, a client laptop attempting to establish a wireless connection to the public Access Point failed to acquire a dynamic IP address lease from the DHCP pool. To isolate the issue, a network wide audit was conducted, confirming that none of the host nodes across any of the logical subnets (Management Office or Point of Sale) were receiving dynamic IP addresses. Endpoints were defaulting to localized APIPA addresses (`169.254.x.x`).
 
-To isolate whether the issue was a total network layer failure or a boundary routing block, the following diagnostic steps were executed sequentially:
-1.  **Local Intra-VLAN Testing:** A manual static IP configuration was temporarily assigned to a workstation in the Management Office (`VLAN 10`). A local ICMP verification ping was sent to the office network printer, which also occupied a static allocation on `VLAN 10`. This test was completely successful, proving that local Layer 2 access connectivity inside a single broadcast domain was fully operational.
-2.  **Cross-Subnet Inter-VLAN Testing:** From the same statically assigned Management workstation, a cross-subnet ICMP verification ping was attempted toward a core printer terminal located inside the secure Point of Sale segment (`VLAN 20`), which possessed a fixed static IP address. This cross-subnet communication test completely failed.
+To isolate whether the issue was at, the following diagnostic steps were executed sequentially:
+1.  **Local Intra-VLAN Testing:** A manual static IP configuration was temporarily assigned to a workstation in the Management Office (`VLAN 10`). A ping was sent to the office network printer, which also occupied a static IP on `VLAN 10`. This test was completely successful, proving that local Layer 2 access connectivity inside a single broadcast domain was fully operational.
+2.  **Cross-Subnet Inter-VLAN Testing:** From the same statically assigned Management workstation, a cross-subnet ICMP ping was attempted toward a printer terminal located inside the secure Point of Sale segment (`VLAN 20`), which possessed a fixed static IP address. This cross-subnet communication test completely failed.
 
 #### Technical Root Cause Analysis
-The successful local ping combined with the failed cross-subnet ping explicitly isolated the architectural flaw to the backbone infrastructure boundary. Local frames were passing through the access switch, but tagged frames were failing to reach the default gateway on the router.
+The successful local ping combined with the failed cross-subnet ping isolated the issue to the trunk port between the switch and the router. Local frames were passing through the access switch, but tagged frames were failing to reach the default gateway on the router.
 
-An audit of the Cisco Catalyst 3560 Multilayer Switch uplink interface (`interface GigabitEthernet0/1`) confirmed that while the IEEE 802.1Q frame encapsulation parameter details were defined, the core command to transition the link state into an active operational trunk was missing. Because multilayer switch ports default to dynamic auto-negotiating access configurations, the interface refused to act as a trunk line. Consequently, the switch treated the backbone connection as a standard, single-VLAN access link, dropping any dynamic DHCP broadcast requests or ICMP packets wrapped in external VLAN headers (`10`, `20`, `30`, `99`) before they could travel upstream to the router's virtual subinterfaces.
+An audit of the Cisco Catalyst 3560 Multilayer Switch uplink interface (`interface GigabitEthernet0/1`) confirmed that the port was not operating as an active trunk. Instead of trunking multi-VLAN traffic, the interface only permitted the native VLAN. Because the three production VLANs were not designated as the native VLAN, all tagged inter-VLAN frames were dropped at the uplink, preventing them from reaching the default gateway on the router. 
 
 #### The Resolution
-To open the multi-subnet transit pathway, the uplink interface configuration mode was accessed via the Switch CLI to explicitly lock down static trunking operations:
+To restore inter-VLAN transit, the missing configuration command was applied to the interface
 
 ```text
-Coffeeshop-SW1# configure terminal
-Coffeeshop-SW1(config)# interface GigabitEthernet0/1
-Coffeeshop-SW1(config-if)# switchport trunk encapsulation dot1q
 Coffeeshop-SW1(config-if)# switchport mode trunk
 ```
 
-Following the execution of the mode initialization command, the Spanning Tree loop-mitigation filters re-converged to a forwarding state. The uplink interface successfully began processing tagged frames, allowing all local client workstations, payment registers, and wireless hosts to complete their dynamic handshakes and pull their correct `192.168.x.x` leases immediately.
-
-
+Following the execution of the command, the switch successfully forwarded tagged traffic from all three VLANs to the router, enabling inter-device communication and allowing endpoints to successfully obtain IP addresses via DHCP.
 
 
 
