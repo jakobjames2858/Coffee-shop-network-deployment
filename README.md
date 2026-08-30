@@ -147,12 +147,12 @@ The edge routing infrastructure utilizes a Cisco 2911 Integrated Services Router
     *   **Technical Function:** Reserves specific IP address blocks from dynamic network distribution.
     *   **Project Purpose:** Excludes addresses `.1` through `.20` across all subnets to protect fixed infrastructure assets (such as switch virtual management interfaces, network printers, and cash registers) from IP address lease conflicts.
 *   **`ip dhcp pool`**
-    *   **Technical Function:** Instantiates a localized dynamic database scope to automate IP parameter distribution to end devices.
+    *   **Technical Function:** Created a local dynamic database scope to automate IP parameter distributed to end devices.
     *   **Project Purpose:** Streamlines retail operations by automatically provisioning client devices with addresses on distinct, isolated networks:
-        *   `Office_Management`: Services back-office administrative corporate computers (`192.168.10.0/24`).
-        *   `POS`: Mandates dedicated network space for transaction terminal domains (`192.168.20.0/24`).
+        *   `Office_Management`: Office administrative corporate computers (`192.168.10.0/24`).
+        *   `POS`: Dedicated network space for transaction terminal domains (`192.168.20.0/24`).
         *   `wifi`: Establishes public customer internet access allocation (`192.168.30.0/24`).
-*   **`default-router` & `dns-server`**
+*   **`default-router`  `dns-server`**
     *   **Technical Function:** Injects local subinterface paths and external DNS resolution parameters natively into the client's automated DHCP lease packet.
     *   **Project Purpose:** Dictates exactly where local laptops, registers, and customer devices must send data packets when attempting to cross out of their local network segments.
 
