@@ -266,6 +266,8 @@ Coffeeshop-SW1(config-if)# switchport mode trunk
 Following the execution of the command, the switch successfully forwarded tagged traffic from all three VLANs to the router, enabling inter-device communication and allowing endpoints to successfully obtain IP addresses via DHCP.
 
 
+### Project Acknowledgments & References
+This network portfolio deployment was built using a configuration baseline inspired by the network tutorials from the [ITTechStudies} Name](https://www.youtube.com/watch?v=pKnmaU1zhUI&t=2674s) training library. This project builds upon that core foundation by introducing custom operational hardening, strict boundary testing, and advanced troubleshooting resolutions.
 
 
 
