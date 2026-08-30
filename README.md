@@ -13,6 +13,14 @@ To satisfy modern business requirements, this network infrastructure incorporate
 
 Leaving a business network unsegmented exposes critical payment processing systems and office infrastructure to potential malicious actors residing on public access links. By combining robust Layer 2 port security with Layer 3 inter-VLAN routing and automated IP addressing, this lab maps out a comprehensive perimeter defense framework capable of sustaining safe retail business operations.
 
+### Network Topology Architecture
+
+Below is the production-ready network layout designed and verified inside Cisco Packet Tracer, mapping out the multi-VLAN segmentation and edge gateway boundaries:
+
+![Cisco Packet Tracer Network Topology Layout](./Image/network-topology.png)
+**[Download the Cisco Packet Tracer Lab File (.pkt)](./coffee-shop-topology.pkt)**
+---
+
 
 ## Cisco IOS Configuration Breakdown (`Coffeeshop-SW1`)
 
